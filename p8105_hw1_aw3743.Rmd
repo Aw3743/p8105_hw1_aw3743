@@ -3,19 +3,64 @@ title: "Simple document"
 output: github_document
 ---
 
-I'm an R Markdown document! 
-
-# Section 1
-
-Here's a **code chunk** that samples from 
-a _normal distribution_:
-
-```{r}
-samp = rnorm(100)
-length(samp)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(moderndive)
+library(ggplot2)
+library(tidyverse)
 ```
 
-# Section 2
+
+```{r load-data}
+# Load the early_january_weather dataset
+data("early_january_weather")
+```
+
+I'm an R Markdown document! 
+
+Problem 0.1
+
+  This .Rmd file is part of my GitHub repo for Homework 1.
+  It renders to github_document, and the repo is organized as instructed.
+
+Problem 0.2
+
+I will follow good coding style by:
+  using clear variable names,
+  writing one command per line,
+  adding whitespace for readability,
+  and explaining results in plain text.
+
+# Problem 1: Exploring Early January Weather
+We will first explore the 'early_january_weather' dataset.
+
+
+```{r}
+data("early_january_weather")
+weather_df = early_january_weather
+```
+
+*    The dataset has `r nrow(weather_df)` rows and `r ncol(weather_df)` columns.  
+*    The variables are: `r paste(names(weather_df), collapse = ", ")`.  
+*    The mean temperature is `r round(mean(weather_df$temp, na.rm = TRUE), 2)` °F.
+
+#I made a scatterplot of temp (y) vs time_hour (x); color points using humid variable & adding color inside of aes in my ggplot.
+
+```{r}
+ggplot(weather_df, aes(x = time_hour, y = temp, color = humid)) +
+  geom_point(alpha = 0.7) +
+  labs(
+    title = "Temperature vs Time (colored by Humidity)",
+    x = "Time (hourly)",
+    y = "Temperature (F)",
+    color = "Humidity"
+  )
+
+#  Display and save the plot to my project directory
+
+ ggsave("temp_vs_humid.png", width = 6, height = 4)
+```
+
+# Problem 2
 
 I can take the mean of the sample, too!
-The mean is `r mean(samp)`.
